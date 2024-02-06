@@ -1,0 +1,8 @@
+.list-of-articles {
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: flex-start;
+    padding: 0;
+    list-style: none;
+}
+
