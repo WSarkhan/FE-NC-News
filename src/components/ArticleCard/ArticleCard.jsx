@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import "./ArticleCard.css";
+
 
 export const ArticleCard = ({ article }) => {
     
@@ -7,12 +9,13 @@ export const ArticleCard = ({ article }) => {
         month: "numeric",
         day: "numeric",
       };
-    
       const formattedDate = new Date(article.created_at).toLocaleString(
         undefined,
         options
       );
+
   return (
+    <Link to={`/articles/${article.article_id}`} className="link-article">
     <li className="card">
             <img
               src={article.article_img_url}
@@ -25,5 +28,6 @@ export const ArticleCard = ({ article }) => {
           <span className="article-votes">{article.votes}</span>
           <span className="article-date">{formattedDate}</span>
     </li>
+    </Link>
   );
 };
