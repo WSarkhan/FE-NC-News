@@ -3,7 +3,6 @@ import "./ArticleList.css"
 
 export const ArticleList = ({ articles }) => {
 
-
   return (
     <ul className='list-of-articles'>
       {articles.map((article) => (

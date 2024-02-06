@@ -13,3 +13,15 @@ export const fetchArticles = (categories = "all") => {
         })
     }
 }
+
+export const fetchIndividualArticle = (id) => {
+    return axios
+      .get(apiLink+`articles/${id}`)
+      .then(({ data }) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log("error fetching data", error)
+      });
+  };
+
