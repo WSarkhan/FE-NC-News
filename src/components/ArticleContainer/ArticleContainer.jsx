@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
+import "./articleContainer.css";
 import { useParams } from "react-router-dom";
-import { fetchIndividualArticle } from "../../utils/utils";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
+import { fetchIndividualArticle, options } from "../../utils/utils";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import LabelIcon from "@mui/icons-material/Label";
-import CardHeader from '@mui/material/CardHeader';
+import { CommentList } from "../Comment List/CommentList";
+import {
+  Divider,
+  Avatar,
+  Grid,
+  Paper,
+  CardHeader,
+  Typography,
+  IconButton,
+  Stack,
+  CardMedia,
+  CardContent,
+  CardActions,
+  Card,
+  Box,
+  CircularProgress,
+} from "@mui/material";
 
 export const ArticleContainer = () => {
   const { article } = useParams();
@@ -24,6 +32,7 @@ export const ArticleContainer = () => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [voted, setVoted] = useState(0);
+  const [err, setErr] = useState(null);
 
   function handleLike() {
     if (!liked) {
@@ -48,17 +57,34 @@ export const ArticleContainer = () => {
   }
 
   useEffect(() => {
-    fetchIndividualArticle(article).then(({ article }) => {
-      setArticleContent(article);
-      setIsLoading(false);
-    });
+    fetchIndividualArticle(article)
+      .then(({ article }) => {
+        setArticleContent(article);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setErr(error.message);
+      });
   }, [article]);
 
-  const options = {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-  };
+  if (err) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        {" "}
+        <Card sx={{ maxWidth: "80%" }}>
+          <CardHeader title={err}></CardHeader>
+        </Card>
+      </Box>
+    );
+  }
+
   const articleDate = new Date(articleContent.created_at).toLocaleString(
     undefined,
     options
@@ -78,56 +104,70 @@ export const ArticleContainer = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Card sx={{ maxWidth: "80%" }}>
-            <CardMedia
-              component="img"
-              height="auto"
-              sx={{ objectFit: "contain" }}
-              image={articleContent.article_img_url}
-              title={articleContent.title}
+        <>    
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              mb: 3,
+            }}
+          >
+            <Card sx={{ maxWidth: "80%" }}>
+              <CardMedia
+                component="img"
+                height="auto"
+                sx={{ objectFit: "contain" }}
+                image={articleContent.article_img_url}
+                title={articleContent.title}
               />
               <CardContent>
-              <Stack direction="row" alignItems="center" gap={0.5}>
-                <LabelIcon/>
-                <Typography gutterBottom>{articleContent.topic}</Typography>
-              </Stack>
+                <Stack direction="row" alignItems="center" gap={0.5}>
+                  <LabelIcon />
+                  <Typography gutterBottom>{articleContent.topic}</Typography>
+                </Stack>
               </CardContent>
-              <CardHeader 
-              title={articleContent.title}
-              subheader= {`by: ${articleContent.author}` }
-             />
-            <CardContent>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
-                {articleContent.body}
-              </Typography>
-            <Typography variant="body2"  color="text.secondary" align="right">created on {articleDate}</Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-              <IconButton onClick={handleLike}>
-                {liked ? (
-                  <ThumbUpIcon aria-label="liked" />
-                ) : (
-                  <ThumbUpAltOutlinedIcon aria-label="like" />
-                )}
-              </IconButton>
-              <Typography>{articleContent.votes + voted}</Typography>
-              <IconButton onClick={handleDislike}>
-                {disliked ? (
-                  <ThumbDownIcon />
-                ) : (
-                  <ThumbDownAltOutlinedIcon aria-label="dislike" />
-                )}
-              </IconButton>
-            </CardActions>
-          </Card>
-        </Box>
+              <CardHeader
+                title={articleContent.title}
+                subheader={`by: ${articleContent.author}`}
+              />
+              <CardContent>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 1.5 }}
+                >
+                  {articleContent.body}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  align="right"
+                >
+                  Posted {articleDate}
+                </Typography>
+              </CardContent>
+              <CardActions disableSpacing>
+                <IconButton onClick={handleLike}>
+                  {liked ? (
+                    <ThumbUpIcon aria-label="liked" />
+                  ) : (
+                    <ThumbUpAltOutlinedIcon aria-label="like" />
+                  )}
+                </IconButton>
+                <Typography>{articleContent.votes + voted}</Typography>
+                <IconButton onClick={handleDislike}>
+                  {disliked ? (
+                    <ThumbDownIcon />
+                  ) : (
+                    <ThumbDownAltOutlinedIcon aria-label="dislike" />
+                  )}
+                </IconButton>
+              </CardActions>
+            </Card>
+          </Box>
+          <CommentList id={article} />
+        </>
       )}
     </>
   );
