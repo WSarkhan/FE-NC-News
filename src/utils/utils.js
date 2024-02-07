@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+
 export const apiLink = "https://nc-news-6jgg.onrender.com/api/"
 
 export const fetchArticles = (categories = "all") => {
@@ -8,8 +9,6 @@ export const fetchArticles = (categories = "all") => {
 
         return axios.get(apiLink+ "articles").then(({data})=>{
             return data.articles
-        }).catch((error)=>{
-            console.log("error fetching data", error)
         })
     }
 }
@@ -20,8 +19,23 @@ export const fetchIndividualArticle = (id) => {
       .then(({ data }) => {
         return data;
       })
-      .catch((error) => {
-        console.log("error fetching data", error)
-      });
+     
   };
+
+  export const fetchCommentsbyArticle = (id) => {
+    return axios
+      .get(apiLink+`articles/${id}/comments`)
+      .then(({ data }) => {
+        return data;
+      })
+     
+  };
+
+
+export const options = {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+};
+
 

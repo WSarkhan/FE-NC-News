@@ -13,6 +13,8 @@ function App() {
     <>
         <Header />
         <NavBar />
+        <div>
+
         <Routes>
           <Route
             path="/"
@@ -28,6 +30,7 @@ function App() {
             }
           />
         </Routes>
+        </div>
     </>
   );
 }

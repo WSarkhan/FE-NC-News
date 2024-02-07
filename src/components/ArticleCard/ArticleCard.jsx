@@ -1,14 +1,11 @@
 import { Link } from "react-router-dom";
 import "./ArticleCard.css";
+import { options } from "../../utils/utils";
 
 
 export const ArticleCard = ({ article }) => {
     
-    const options = {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-      };
+    
       const formattedDate = new Date(article.created_at).toLocaleString(
         undefined,
         options
