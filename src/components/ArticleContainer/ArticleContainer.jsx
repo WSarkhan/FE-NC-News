@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./articleContainer.css";
+import "./ArticleContainer.css";
 import { useParams } from "react-router-dom";
 import { fetchIndividualArticle, options, patchArticleVotes } from "../../utils/utils";
 import LabelIcon from "@mui/icons-material/Label";
@@ -33,6 +33,7 @@ export const ArticleContainer = () => {
   const [disliked, setDisliked] = useState(false);
   const [voted, setVoted] = useState(0);
   const [err, setErr] = useState(null);
+  const [likeErr, setLikeErr] = useState(null)
   const [likeLoading, setLikeLoading] = useState(false)
 
   function handleLike() {
@@ -42,12 +43,19 @@ export const ArticleContainer = () => {
       setVoted(1);
       patchArticleVotes(article, 1).then(() => {
         setLikeLoading(false);
+      }).catch((error) => {
+        console.log(error.message);
+        setLikeErr(error.message);
       });
     } else {
       setVoted(0);
       patchArticleVotes(article, -1).then(() => {
         setLikeLoading(false);
+      }).catch((error) => {
+        console.log(error.message);
+        setLikeErr(error.message);
       });
+
     }
     setLiked(!liked);
   }
@@ -59,11 +67,17 @@ export const ArticleContainer = () => {
       setVoted(-1);
       patchArticleVotes(article, -1).then(() => {
         setLikeLoading(false);
+      }).catch((error) => {
+        console.log(error.message);
+        setLikeErr(error.message);
       });
     } else {
       setVoted(0);
       patchArticleVotes(article, 1).then(() => {
         setLikeLoading(false);
+      }).catch((error) => {
+        console.log(error.message);
+        setLikeErr(error.message);
       });
     }
     setDisliked(!disliked);
@@ -163,21 +177,25 @@ export const ArticleContainer = () => {
                   Posted {articleDate}
                 </Typography>
               </CardContent>
-              <CardActions disableSpacing> {likeLoading ? <CircularProgress /> : <IconButton onClick={handleLike}>
+              <CardActions disableSpacing> 
+              {likeErr ? <p>{likeErr}</p> : 
+              (likeLoading ? <CircularProgress /> : <IconButton onClick={handleLike}>
               {liked ? (
                 <ArrowCircleUpTwoToneIcon aria-label="liked" />
               ) : (
                 <ArrowCircleUpOutlinedIcon  aria-label="like" />
               )}
-            </IconButton>}
+            </IconButton>)}
             <Typography>{articleContent.votes + voted}</Typography>
-            {likeLoading ? <CircularProgress /> : <IconButton onClick={handleDislike}>
+            {likeErr ? <p>{likeErr}</p> : 
+            (likeLoading ? <CircularProgress /> : <IconButton onClick={handleDislike}>
               {disliked ? (
                 <ArrowCircleDownTwoToneIcon aria-label="disliked" />
               ) : (
                 <ArrowCircleDownOutlinedIcon  aria-label="dislike" />
               )}
-            </IconButton>}
+            </IconButton>)
+            }
             </CardActions>
             </Card>
           </Box>
