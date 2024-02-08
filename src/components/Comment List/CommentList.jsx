@@ -15,6 +15,7 @@ export const CommentList = ({ id }) => {
   const [posted, setPosted] = useState(false)
   const [newComment, setNewComment] = useState("")
   const loggedInUser = useContext(UserContext)
+  const [err, setErr] = useState(null)
 
   const addComment =(newComment)=>{
     setCommentsData((commentsData)=>{
@@ -43,7 +44,8 @@ const newCommentData = {
       setPostLoading(false)
       setPosted(true)     
     }).catch((err)=>{
-      setCommentsData.slice(1)
+      setErr(err.message)
+      setCommentsData(commentsData.slice(1))
     })
   }
 
@@ -76,7 +78,7 @@ const newCommentData = {
       <TextField required fullWidth id="outlined-basic" label="Your comment here..." variant="outlined" rows={4}multiline sx={{
     m: 1, width: "80%" }} onChange={({target}) => {setNewComment(target.value)}}
     />
-     <Button fullWidth sx={{ margin: "5px", maxWidth: "80%"}} variant="outlined" type="submit" disabled={posted}>{ posted ? <Tooltip title="Want to post again? Click Post Again"><span>Posted!</span></Tooltip> : (postLoading ? <CircularProgress /> : <span>Post</span>)}</Button>
+     <Button fullWidth sx={{ margin: "5px", maxWidth: "80%"}} variant="outlined" type="submit" disabled={posted}>{err ? "There has been an error": ( posted ? <Tooltip title="Want to post again? Click Post Again"><span>Posted!</span></Tooltip> : (postLoading ? <CircularProgress /> : <span>Post</span>))}</Button>
     </form>
     </Box>
      

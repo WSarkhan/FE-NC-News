@@ -51,3 +51,8 @@ export const options = {
 };
 
 
+export const deleteComment = (id) => {
+  return apiLink.delete(`/comments/${id}`).then((res) => {
+    console.log(res);
+  });
+};
