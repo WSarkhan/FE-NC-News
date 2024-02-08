@@ -15,9 +15,9 @@ export const CommentList = ({ id }) => {
   }, [id]);
 
   return (
-   <ul>
+   <ul className="list-of-comments">
       {commentsData.map((comment) => (
-        <CommentCard key={comment.comment_id} comment={comment} />
+        <CommentCard key={comment.comment_id} comment={comment} id={id} />
       ))}
   </ul>
   );

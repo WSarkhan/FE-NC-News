@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import "./articleContainer.css";
 import { useParams } from "react-router-dom";
-import { fetchIndividualArticle, options } from "../../utils/utils";
-import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
-import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import { fetchIndividualArticle, options, patchArticleVotes } from "../../utils/utils";
 import LabelIcon from "@mui/icons-material/Label";
+import ArrowCircleDownOutlinedIcon from '@mui/icons-material/ArrowCircleDownOutlined';
+import ArrowCircleUpOutlinedIcon from '@mui/icons-material/ArrowCircleUpOutlined';
+import ArrowCircleDownTwoToneIcon from '@mui/icons-material/ArrowCircleDownTwoTone';
+import ArrowCircleUpTwoToneIcon from '@mui/icons-material/ArrowCircleUpTwoTone';
 import { CommentList } from "../Comment List/CommentList";
 import {
   Divider,
@@ -33,28 +33,44 @@ export const ArticleContainer = () => {
   const [disliked, setDisliked] = useState(false);
   const [voted, setVoted] = useState(0);
   const [err, setErr] = useState(null);
+  const [likeLoading, setLikeLoading] = useState(false)
 
   function handleLike() {
     if (!liked) {
       setDisliked(false);
-      setVoted(+1);
+      setLikeLoading(true);
+      setVoted(1);
+      patchArticleVotes(article, 1).then(() => {
+        setLikeLoading(false);
+      });
+    } else {
+      setVoted(0);
+      patchArticleVotes(article, -1).then(() => {
+        setLikeLoading(false);
+      });
     }
     setLiked(!liked);
-    if (liked) {
-      setVoted(0);
-    }
   }
-
+  
   function handleDislike() {
     if (!disliked) {
       setLiked(false);
+      setLikeLoading(true);
       setVoted(-1);
+      patchArticleVotes(article, -1).then(() => {
+        setLikeLoading(false);
+      });
+    } else {
+      setVoted(0);
+      patchArticleVotes(article, 1).then(() => {
+        setLikeLoading(false);
+      });
     }
     setDisliked(!disliked);
-    if (disliked) {
-      setVoted(0);
-    }
   }
+
+
+
 
   useEffect(() => {
     fetchIndividualArticle(article)
@@ -147,23 +163,22 @@ export const ArticleContainer = () => {
                   Posted {articleDate}
                 </Typography>
               </CardContent>
-              <CardActions disableSpacing>
-                <IconButton onClick={handleLike}>
-                  {liked ? (
-                    <ThumbUpIcon aria-label="liked" />
-                  ) : (
-                    <ThumbUpAltOutlinedIcon aria-label="like" />
-                  )}
-                </IconButton>
-                <Typography>{articleContent.votes + voted}</Typography>
-                <IconButton onClick={handleDislike}>
-                  {disliked ? (
-                    <ThumbDownIcon />
-                  ) : (
-                    <ThumbDownAltOutlinedIcon aria-label="dislike" />
-                  )}
-                </IconButton>
-              </CardActions>
+              <CardActions disableSpacing> {likeLoading ? <CircularProgress /> : <IconButton onClick={handleLike}>
+              {liked ? (
+                <ArrowCircleUpTwoToneIcon aria-label="liked" />
+              ) : (
+                <ArrowCircleUpOutlinedIcon  aria-label="like" />
+              )}
+            </IconButton>}
+            <Typography>{articleContent.votes + voted}</Typography>
+            {likeLoading ? <CircularProgress /> : <IconButton onClick={handleDislike}>
+              {disliked ? (
+                <ArrowCircleDownTwoToneIcon aria-label="disliked" />
+              ) : (
+                <ArrowCircleDownOutlinedIcon  aria-label="dislike" />
+              )}
+            </IconButton>}
+            </CardActions>
             </Card>
           </Box>
           <CommentList id={article} />

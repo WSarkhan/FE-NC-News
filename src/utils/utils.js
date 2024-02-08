@@ -1,21 +1,23 @@
 import axios from 'axios'
 
 
-export const apiLink = "https://nc-news-6jgg.onrender.com/api/"
+const apiLink = axios.create({
+  baseURL: "https://nc-news-6jgg.onrender.com/api/",
+});
 
 export const fetchArticles = (categories = "all") => {
 
     if (categories === 'all') {
 
-        return axios.get(apiLink+ "articles").then(({data})=>{
+        return apiLink.get("articles").then(({data})=>{
             return data.articles
         })
     }
 }
 
 export const fetchIndividualArticle = (id) => {
-    return axios
-      .get(apiLink+`articles/${id}`)
+    return apiLink
+      .get(`articles/${id}`)
       .then(({ data }) => {
         return data;
       })
@@ -23,12 +25,18 @@ export const fetchIndividualArticle = (id) => {
   };
 
   export const fetchCommentsbyArticle = (id) => {
-    return axios
-      .get(apiLink+`articles/${id}/comments`)
+    return apiLink
+      .get(`articles/${id}/comments`)
       .then(({ data }) => {
         return data;
       })
      
+  };
+
+  export const patchArticleVotes = (id, vote) => {
+    return apiLink.patch(`/articles/${id}`, { inc_votes: vote }).then(({ data }) => {
+      return data;
+    });
   };
 
 

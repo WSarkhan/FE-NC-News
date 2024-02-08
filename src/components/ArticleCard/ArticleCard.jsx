@@ -19,11 +19,11 @@ export const ArticleCard = ({ article }) => {
               alt={article.title}
             />
           <span className="article-title">{article.title}</span>
-          <span className="article-author">{article.author}</span>
-          <span className="article-comments">{article.comments}</span>
-          <span className="article-topic">{article.topic}</span>
-          <span className="article-votes">{article.votes}</span>
-          <span className="article-date">{formattedDate}</span>
+          <span className="article-author">By: {article.author}</span>
+          <span className="article-comments">Number of Comments: {article.comments}</span>
+          <span className="article-topic">Topic: {article.topic}</span>
+          <span className="article-votes">Upvotes: {article.votes}</span>
+          <span className="article-date">Posted: {formattedDate}</span>
     </li>
     </Link>
   );
