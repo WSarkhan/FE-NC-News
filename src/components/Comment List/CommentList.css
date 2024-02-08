@@ -1,4 +1,12 @@
 ul {
     padding: 0px;
     padding-inline-start: 0px;
+    max-width: "80%"
+}
+
+#commentForm {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width:100%
 }

@@ -39,6 +39,10 @@ export const fetchIndividualArticle = (id) => {
     });
   };
 
+  export const postNewComment = (id, {username}, comment) => {
+   return apiLink.post(`/articles/${id}/comments`, {body: comment, username})
+  }
+
 
 export const options = {
   year: "numeric",
