@@ -105,6 +105,7 @@ export const ArticleContainer = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          m:2
         }}
       >
         {" "}
@@ -140,7 +141,8 @@ export const ArticleContainer = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              mb: 3,
+              m: 2,
+
             }}
           >
             <Card sx={{ maxWidth: "80%" }}>
