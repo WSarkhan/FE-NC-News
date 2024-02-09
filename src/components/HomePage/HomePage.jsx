@@ -7,20 +7,23 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
+import { TopicList } from "../TopicList/TopicList";
 
 export const HomePage = () => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [err, setErr] = useState(null)
-
+  const [topic, setTopic] = useState("")
   useEffect(() => {
-    fetchArticles().then((data) => {
+    fetchArticles(topic).then((data) => {
       setArticles(data);
       setIsLoading(false);
     }).catch((error)=>{
       setErr(error.message)
     })
-  }, []);
+  }, [topic]);
+
+
 
   if (err) {
     return (
@@ -39,6 +42,12 @@ export const HomePage = () => {
 
 
   return (
+    <>
+      <Box sx={{ m:2, display: "flex",
+          flexDirection: "row",
+          justifyContent:"right", maxWidth: "90%"}}>
+      <TopicList topic={topic} setTopic={setTopic}/>
+      </Box>
     <div className="HomePage">
       <ArticleList articles={articles} />
       {isLoading ? (<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -46,5 +55,6 @@ export const HomePage = () => {
       <CircularProgress />
     </Box>)  : null}
     </div>
+    </>
   );
 };
