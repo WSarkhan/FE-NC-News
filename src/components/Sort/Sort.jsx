@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import "./Sort.css"
 import { useState } from "react";
 
@@ -11,6 +11,8 @@ export const Sort = ({sortBy, setSortBy}) => {
         setSortBy(event.target.value)
       };
     return (
+      <div>
+      <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
   <InputLabel id="sort-by">Sort by</InputLabel>
   <Select
@@ -18,7 +20,6 @@ export const Sort = ({sortBy, setSortBy}) => {
     id="sort-select"
     value={sort}
     label="sort by"
-    displayEmpty
     onChange={handleChange}
   >
     <MenuItem value="created_at">Date</MenuItem>
@@ -26,5 +27,7 @@ export const Sort = ({sortBy, setSortBy}) => {
     <MenuItem value="votes">Votes</MenuItem>
   </Select>
 </FormControl>
+</Box>
+</div>
     )
 }
