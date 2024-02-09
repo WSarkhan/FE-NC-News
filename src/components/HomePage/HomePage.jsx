@@ -63,7 +63,7 @@ export const HomePage = () => {
     <>
       <Box sx={{ m:2, display: "flex",
           flexDirection: "row",
-          justifyContent:"center", maxWidth: "90%"}}>
+          justifyContent:"space-evenly", maxWidth: "90%"}}>
       <TopicList topic={topic} setTopic={setTopic}/>
       <Sort sortBy={sortBy} setSortBy={setSortBy}/>
       </Box>
