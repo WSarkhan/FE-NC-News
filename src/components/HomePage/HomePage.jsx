@@ -9,19 +9,35 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import { TopicList } from "../TopicList/TopicList";
 
+
 export const HomePage = () => {
+  
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [err, setErr] = useState(null)
   const [topic, setTopic] = useState("")
+ 
+  
   useEffect(() => {
-    fetchArticles(topic).then((data) => {
-      setArticles(data);
-      setIsLoading(false);
-    }).catch((error)=>{
-      setErr(error.message)
-    })
-  }, [topic]);
+    if (topic && topic !== "All") {
+      fetchArticles(topic)
+        .then((data) => {
+          setArticles(data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setErr(error.message);
+        });
+    } else {
+      fetchArticles('') 
+        .then((data) => {
+          setArticles(data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setErr(error.message);
+        });
+  }}, [topic]);
 
 
 

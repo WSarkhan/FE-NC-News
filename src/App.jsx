@@ -37,6 +37,8 @@ function App() {
               />
             }
           />
+          <Route path=":topic"
+          element={<HomePage/>}/>
         </Routes>
         </div>
         </UserContext.Provider>
