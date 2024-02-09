@@ -24,7 +24,7 @@ export const TopicList = ({ topic, setTopic }) => {
       .catch((err) => {
         setErr(err.message);
       });
-  });
+  },[]);
   const handleChange = (event) => {
     setTopic(event.target.value);
   };
@@ -41,7 +41,7 @@ export const TopicList = ({ topic, setTopic }) => {
     <div>
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Topic</InputLabel>
+          <InputLabel id="topic">Topic</InputLabel>
           <Select
             labelId="topic-select"
             id="topic-select"
@@ -60,7 +60,7 @@ export const TopicList = ({ topic, setTopic }) => {
                   to={`/${slug}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  {slug}
+                  {slug[0].toUpperCase()+slug.slice(1)}
                 </Link>
               </MenuItem>
             ))}

@@ -5,8 +5,11 @@ const apiLink = axios.create({
   baseURL: "https://nc-news-6jgg.onrender.com/api/",
 });
 
-export const fetchArticles = (topic) => {
-        return apiLink.get(`articles?topic=${topic}`).then(({data})=>{
+export const fetchArticles = (topic, sort_by="created_at",
+order = "DESC") => {
+  console.log(sort_by) 
+  console.log(topic)
+        return apiLink.get(`articles?topic=${topic}&sort_by=${sort_by}&order=${order}`).then(({data})=>{
             return data.articles
         })
     }
@@ -59,3 +62,7 @@ export const getTopics = () => {
     return data;
   });
 };
+
+export function refreshPage(){ 
+  window.location.reload(); 
+}

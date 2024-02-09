@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import { TopicList } from "../TopicList/TopicList";
+import { Sort } from "../Sort/Sort";
 
 
 export const HomePage = () => {
@@ -16,11 +17,12 @@ export const HomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [err, setErr] = useState(null)
   const [topic, setTopic] = useState("")
+  const [sortBy, setSortBy] = useState('created_at')
  
   
   useEffect(() => {
     if (topic && topic !== "All") {
-      fetchArticles(topic)
+      fetchArticles(topic, sortBy)
         .then((data) => {
           setArticles(data);
           setIsLoading(false);
@@ -29,7 +31,7 @@ export const HomePage = () => {
           setErr(error.message);
         });
     } else {
-      fetchArticles('') 
+      fetchArticles('',sortBy) 
         .then((data) => {
           setArticles(data);
           setIsLoading(false);
@@ -37,7 +39,7 @@ export const HomePage = () => {
         .catch((error) => {
           setErr(error.message);
         });
-  }}, [topic]);
+  }}, [topic, sortBy]);
 
 
 
@@ -61,8 +63,9 @@ export const HomePage = () => {
     <>
       <Box sx={{ m:2, display: "flex",
           flexDirection: "row",
-          justifyContent:"right", maxWidth: "90%"}}>
+          justifyContent:"center", maxWidth: "90%"}}>
       <TopicList topic={topic} setTopic={setTopic}/>
+      <Sort sortBy={sortBy} setSortBy={setSortBy}/>
       </Box>
     <div className="HomePage">
       <ArticleList articles={articles} />
