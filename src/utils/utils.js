@@ -5,15 +5,12 @@ const apiLink = axios.create({
   baseURL: "https://nc-news-6jgg.onrender.com/api/",
 });
 
-export const fetchArticles = (categories = "all") => {
-
-    if (categories === 'all') {
-
-        return apiLink.get("articles").then(({data})=>{
+export const fetchArticles = (topic) => {
+        return apiLink.get(`articles?topic=${topic}`).then(({data})=>{
             return data.articles
         })
     }
-}
+
 
 export const fetchIndividualArticle = (id) => {
     return apiLink
@@ -54,5 +51,11 @@ export const options = {
 export const deleteComment = (id) => {
   return apiLink.delete(`/comments/${id}`).then((res) => {
     console.log(res);
+  });
+};
+
+export const getTopics = () => {
+  return apiLink.get("/topics").then(({ data }) => {
+    return data;
   });
 };

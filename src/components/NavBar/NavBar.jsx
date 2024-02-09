@@ -9,7 +9,7 @@ const loggedInUser = useContext(UserContext)
     return (
         <AppBar  style={{ background: '#ffffff', borderRadius:"8px", maxWidth: "100%"}} position="static">
         <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
+        <Toolbar disableGutters sx={{ justifyContent: 'space-evenly' }}>
             <Link to="/" style={{ textDecoration: 'none' }}>
             <Typography variant="h6" noWrap component="div" color="text.primary" sx={{ ml: 2, mr: 2, flexGrow: 1 }}>
                     Home
@@ -24,7 +24,7 @@ const loggedInUser = useContext(UserContext)
         }}
       >
           <Tooltip title={`Logged in as: ${loggedInUser.username}`}>
-          <Avatar alt={loggedInUser.username} src={loggedInUser.avatar_url}
+          <Avatar sx={{m:1}}alt={loggedInUser.username} src={loggedInUser.avatar_url}
           size="medium"/>
           </Tooltip>
           <Typography variant="caption"  display="block" gutterBottom sx={{ ml: 1 }} color="text.primary">
