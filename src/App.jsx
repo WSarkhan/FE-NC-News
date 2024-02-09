@@ -6,6 +6,7 @@ import { NavBar } from "./components/NavBar/NavBar";
 import { HomePage } from "./components/HomePage/HomePage";
 import { ArticleContainer } from "./components/ArticleContainer/ArticleContainer";
 import { UserContext } from "./context/UserContext";
+import { UserList } from "./components/UserList/UserList";
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
           />
           <Route path=":topic"
           element={<HomePage/>}/>
+        <Route path="/users" element={<UserList/>}/>
         </Routes>
         </div>
         </UserContext.Provider>
